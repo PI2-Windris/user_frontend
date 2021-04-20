@@ -8,24 +8,17 @@ import {
   CCol,
   CDataTable,
   CRow,
-  CPagination
+  CPagination,
+  CButton,
+  
 } from '@coreui/react'
 
-import GeneratorsData from './GeneratorsData'
-
-const getBadge = status => {
-  switch (status) {
-    case 'High': return 'danger'
-    case 'Low': return 'warning'
-    case 'Normal': return 'success'
-    default: return 'primary'
-  }
-}
+import axios from 'axios'
 
 const getStatusBadge = status => {
   switch (status) {
-    case 'ON': return 'success'
-    case 'OFF': return 'danger'
+    case 0: return 'success'
+    case '1': return 'danger'
     default: return 'primary'
   }
 }
@@ -35,58 +28,100 @@ const Generators = () => {
   const queryPage = useLocation().search.match(/page=([0-9]+)/, '')
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1)
   const [page, setPage] = useState(currentPage)
+  const [generatorsData, setGeneratorsData] = useState([])
+
+  const [details, setDetails] = useState([])
+  // const [items, setItems] = useState(usersData)
+
+  const toggleDetails = (index) => {
+    const position = details.indexOf(index)
+    let newDetails = details.slice()
+    if (position !== -1) {
+      newDetails.splice(position, 1)
+    } else {
+      newDetails = [...details, index]
+    }
+    setDetails(newDetails)
+  }
 
   const pageChange = newPage => {
-    currentPage !== newPage && history.push(`/users?page=${newPage}`)
+    currentPage !== newPage && history.push(`/generators?page=${newPage}`)
   }
 
   useEffect(() => {
     currentPage !== page && setPage(currentPage)
   }, [currentPage, page])
 
+  useEffect(() => {
+    const userId = sessionStorage.getItem('userId');
+    const token = sessionStorage.getItem('token');
+    const config = {
+      headers: { Authorization: `Bearer ${JSON.parse(token)}` }
+    };
+
+    axios
+      .get(`http://localhost:8001/generator/user/${JSON.parse(userId)}`, config)
+      .then(response => {
+        // console.log(response)
+        setGeneratorsData(response.data)
+      })
+    }, [])
+
   return (
     <CRow>
-      <CCol xl={12}>
+      <CCol xl={6}>
         <CCard>
           <CCardHeader>
             Geradores
           </CCardHeader>
           <CCardBody>
           <CDataTable
-            items={GeneratorsData}
+            items={generatorsData}
             fields={[
-              { key: 'Nome do Gerador', _classes: 'font-weight-bold' },
-              'Id do Gerador', 'Status', 'Performance'
+              { key: '_id', label: 'Id do Gerador', _classes: 'font-weight-bold' },
+              { key: '__v', label: 'Status'},
+              {
+                key: 'show_details',
+                label: '',
+                _style: { width: '1%' },
+                sorter: false,
+                filter: false
+              }
             ]}
             hover
             striped
             itemsPerPage={10}
             activePage={page}
-            clickableRows
-            onRowClick={(item) => history.push(`/users/${item.id}`)}
-            scopedSlots = {
-              {'Performance':
+            scopedSlots = {{
+              '__v':
                 (item)=>(
                   <td>
-                    <CBadge color={getBadge(item.Performance)}>
-                      {item.Performance}
+                    <CBadge color={getStatusBadge(item.__v)}>
+                      {'ON'}
                     </CBadge>
                   </td>
                 ),
-                'Status':
-                (item)=>(
-                  <td>
-                    <CBadge color={getStatusBadge(item.Status)}>
-                      {item.Status}
-                    </CBadge>
-                  </td>
-                )}
+                'show_details':
+                (item, index)=>{
+                  return (
+                    <td className="py-2">
+                      <CButton
+                        color="danger"
+                        size="sm"
+                        onClick={()=>{toggleDetails(index)}}
+                      >
+                        {details.includes(index) ? 'Ligar' : 'Desligar'}
+                      </CButton>
+                    </td>
+                    )
+                },
+              }
             }
           />
           <CPagination
             activePage={page}
             onActivePageChange={pageChange}
-            pages={5}
+            pages={3}
             doubleArrows={false} 
             align="center"
           />

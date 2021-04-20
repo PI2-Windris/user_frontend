@@ -23,6 +23,11 @@ function setToken(userToken) {
   sessionStorage.setItem('token', JSON.stringify(userToken));
 }
 
+function setUserId(userId) {
+  // console.log('setToken: ', userToken);
+  sessionStorage.setItem('userId', JSON.stringify(userId));
+}
+
 function getToken() {
   const tokenString = sessionStorage.getItem('token');
   const userToken = JSON.parse(tokenString);
@@ -55,7 +60,7 @@ const App = () => {
       <HashRouter>
           <React.Suspense fallback={loading}>
             <Switch>
-            <Route exact path="/login" name="Login Page" render={props => <Login setToken={setToken} {...props}/>} />
+            <Route exact path="/login" name="Login Page" render={props => <Login setToken={setToken} setUserId={setUserId} {...props}/>} />
             <Route exact path="/register" name="Register Page" component={Register} />
             <Route exact path="/404" name="Page 404" component={Page404} />
             <Route exact path="/500" name="Page 500" component={Page500} />

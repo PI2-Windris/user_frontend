@@ -18,7 +18,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import axios from 'axios';
 
-const Login = ({setToken}) => {
+const Login = ({setToken, setUserId}) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -46,9 +46,10 @@ const Login = ({setToken}) => {
     axios
       .post('http://localhost:8001/user_service/auth', loginObject)
       .then(response => {
-        // console.log(response);
+        console.log(response);
         if('token' in response.data) {
           setToken(response.data.token);
+          setUserId(response.data.id);
           history.push("/dashboard");
         } else {
           setFailAlert(true);
