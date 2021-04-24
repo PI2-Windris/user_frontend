@@ -21,6 +21,12 @@ const _nav =  [
     icon: <CIcon name="cilEnvelopeLetter" customClasses="c-sidebar-nav-icon"/>,
   },
   {
+    _tag: 'CSidebarNavItem',
+    name: 'Manutenção',
+    to: '/maintanance',
+    icon: <CIcon name="cilBookmark" customClasses="c-sidebar-nav-icon"/>,
+  },
+  {
     _tag: 'CSidebarNavTitle',
     _children: ['Theme']
   },
