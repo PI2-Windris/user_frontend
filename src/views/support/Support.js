@@ -11,7 +11,8 @@ import {
   CTextarea,
   CInput,
   CLabel,
-  CRow
+  CRow,
+  CAlert
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import emailjs from 'emailjs-com';
@@ -20,7 +21,8 @@ const Support = () => {
 
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
-
+  const [emailStatus, setEmailStatus] = useState('');
+ 
   const handleSubjectChange = event => {
     event.preventDefault();
     setSubject(event.target.value);
@@ -35,7 +37,7 @@ const Support = () => {
     const templateId = 'template_ylswnko';
     const replyEmail = 'windrisapp@gmail.com'
 
-    sendFeedback(templateId, {message: content, from_name: 'usuario', to_name: 'adm', reply_to: replyEmail})
+    sendFeedback(templateId, {message_html: content, from_name: 'usuario', to_name: 'adm', reply_to: replyEmail})
   }
 
   const sendFeedback = (templateId, variables) => {
@@ -43,10 +45,16 @@ const Support = () => {
       'service_92uu25u', templateId, 
       variables, 'user_Z5ragRN1iflFMiK6XYAUe'
       ).then(res => {
-        console.log('Email successfully sent!')
+        // console.log('Email successfully sent!')
+        setEmailStatus('success')
       })
       // Handle errors here however you like, or use a React error boundary
-      .catch(err => console.error('Oh well, you failed. Here some thoughts on the error that occured:', err))
+      .catch(err => {
+        setEmailStatus('failure')
+        // console.error('Oh well, you failed. Here some thoughts on the error that occured:', err)
+      })
+    
+      resetEmail()
     }
 
   const resetEmail = () => {
@@ -64,6 +72,9 @@ const Support = () => {
               Enviar mensagem
             </CCardHeader>
             <CCardBody>
+            {emailStatus == 'success' ? <CAlert color="success">Email enviado com sucesso!</CAlert>
+              : emailStatus == 'failure' ? <CAlert color="danger">Falha ao enviar email!</CAlert>
+              : null}
               <CForm action="" method="post" encType="multipart/form-data" className="form-horizontal">
                 <CFormGroup row>
                   <CCol md="3">
