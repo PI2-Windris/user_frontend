@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.2'
 services:
   react-ui:
     stdin_open: true
@@ -10,3 +10,5 @@ services:
     volumes:
        - "./:/app"
        - "/app/node_modules"
+
+       
