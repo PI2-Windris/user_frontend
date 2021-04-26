@@ -40,6 +40,7 @@ const User = React.lazy(() => import('./views/users/User'));
 const Generators = React.lazy(() => import('./views/generators/Generators'));
 const Support = React.lazy(() => import('./views/support/Support'));
 const Maintenance = React.lazy(() => import('./views/maintenance/Maintenance'));
+const WindrisDashboard = React.lazy(() => import('./views/dashboard/WindrisDashboard'));
 
 
 const routes = [
@@ -86,6 +87,7 @@ const routes = [
   { path: '/generators', exact: true,  name: 'Generators', component: Generators },
   { path: '/support', exact: true,  name: 'Support', component: Support },
   { path: '/maintanance', exact: true,  name: 'Maintenance', component: Maintenance },
+  { path: '/windrisdashboard', name: 'WindrisDashboard', component: WindrisDashboard },
 ];
 
 export default routes;
