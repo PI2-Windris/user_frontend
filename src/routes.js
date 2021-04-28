@@ -41,11 +41,12 @@ const Generators = React.lazy(() => import('./views/generators/Generators'));
 const Support = React.lazy(() => import('./views/support/Support'));
 const Maintenance = React.lazy(() => import('./views/maintenance/Maintenance'));
 const WindrisDashboard = React.lazy(() => import('./views/dashboard/WindrisDashboard'));
+const WindrisDashboardUnique = React.lazy(() => import('./views/dashboard/WindrisDashboardUnique'));
 
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/dashboard', name: 'WindrisDashboard', component: WindrisDashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
@@ -82,12 +83,14 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', component: Modals },
   { path: '/notifications/toaster', name: 'Toaster', component: Toaster },
   { path: '/widgets', name: 'Widgets', component: Widgets },
-  { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/generators', exact: true,  name: 'Generators', component: Generators },
   { path: '/support', exact: true,  name: 'Support', component: Support },
   { path: '/maintanance', exact: true,  name: 'Maintenance', component: Maintenance },
-  { path: '/windrisdashboard', name: 'WindrisDashboard', component: WindrisDashboard },
+  { path: '/users', exact: true,  name: 'Users', component: Users },
+  { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  { path: '/windrisdashboard/', exact: true, name: 'WindrisDashboard', component: WindrisDashboard },
+  { path: '/windrisdashboard/:id', exact: true,  name: 'WindrisDashboardUnique', component: WindrisDashboardUnique },
+
 ];
 
 export default routes;

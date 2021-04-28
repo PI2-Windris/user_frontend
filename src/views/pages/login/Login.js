@@ -50,7 +50,7 @@ const Login = ({setToken, setUserId}) => {
         if('token' in response.data) {
           setToken(response.data.token);
           setUserId(response.data.id);
-          history.push("/dashboard");
+          history.push("/windrisdashboard");
         } else {
           setFailAlert(true);
         }
